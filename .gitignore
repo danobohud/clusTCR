@@ -12,3 +12,11 @@ dist/
 .ipynb_checkpoints
 .sass-cache/
 _site/
+tcr_compare/results/**
+tcr_compare/logos/**/**
+tcr_compare/cytoscape/**
+tcr_compare/clusters/**
+tcr_compare/clusters/**/**
+tcr_compare/modules/olga/TR*
+tcr_compare/modules/gliph2/lib/metarepertoire*
+clustcr/modules/ismart/lib/input*
