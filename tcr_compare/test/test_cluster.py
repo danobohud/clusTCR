@@ -32,15 +32,9 @@ class Test(unittest.TestCase):
         self.clust.get_chain_data()
 
     def test_cluster(self):
-        # assert type(self.clust.chain) == pd.DataFrame()
 
         for c in ['CDR3','V','J','Epitope']:
             assert c in self.clust.epitopes.columns
-
-
-    # def test_cluster(self):
-    #     self.clust.cluster(self.model_selection)
-
 
 if __name__ == '__main__':
     unittest.main()
