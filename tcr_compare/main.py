@@ -8,7 +8,6 @@ wdir=os.getcwd()
 root='/'.join(wdir.split('/')[:-1])
 sys.path.append(root)
 
-from util_functions import get_time, write_lines
 from cluster import initialise, Cluster
 from downstream import get_motifs, annotate_experimental
 
@@ -18,7 +17,6 @@ def arg_check(args):
     :return: corrected arguments'''
     
     args.chain_selection=args.chain_selection.lower()
-
     args.model_selection=args.model_selection.lower()
 
     if args.chain_selection not in ['alpha','beta','paired','all']:
