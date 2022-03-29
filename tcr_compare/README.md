@@ -18,12 +18,13 @@ The core functionality of ClusTCR is unchanged from the original package, and so
 To install and run the tcr_compare module:
 
 git clone https://github.com/danobohud/clusTCR
-
-conda env create -f clusTCR_mod.yml
+Navigate to the ClusTCR package on your local machine
+cd clusTCR/tcr_compare
+conda env create -f tcrmod.yml
 
 *** Running the package ***
 
-Navigate to the ClusTCR package on your local machine
+
 cd clusTCR/tcr_compare
 conda activate clusTCR_mod
 
