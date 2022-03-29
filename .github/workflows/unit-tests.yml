@@ -26,7 +26,10 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
+        cd /home/runner/work/clusTCR/clusTCR/tcr_compare/
         python -m pip install --upgrade pip
+        conda env create -f clusTCR_mod.yml
+        conda activate clusTCR_mod
         # python -m pip install flake8
 
 
@@ -39,5 +42,5 @@ jobs:
     - name: Test with unittest
       run: |
 
-        cd /home/runner/work/clusTCR/clusTCR/tcr_compare/test/
+        cd test
         python -m unittest test_cluster
