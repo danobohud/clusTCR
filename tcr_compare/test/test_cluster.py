@@ -7,7 +7,7 @@ src_path = (os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 print([x for x in os.listdir(src_path)])
 sys.path.append(src_path)
 
-# import cluster
+import cluster
 
 class Test(unittest.TestCase):
     def setUp(self):
