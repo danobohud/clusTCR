@@ -1,7 +1,7 @@
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 import pandas as pd
-import os, sys
+import os
 
 from cluster_functions import prepare_chains, load_vdjdb, get_epitope
 from cluster_functions import clusTCR, GIANA, gliph2, ismart, hamming, length_cluster, tcrdist, tcrai_clusts
