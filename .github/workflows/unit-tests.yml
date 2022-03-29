@@ -28,7 +28,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         # python -m pip install flake8
-        conda env create -f clusTCR_mod
+        conda env create -f tcr_compare/clusTCR_mod
         conda activate clusTCR_mod
 #     - name: Lint with flake8
 #       run: |
