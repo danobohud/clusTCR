@@ -4,7 +4,7 @@ import os,sys,unittest
 sys.path.insert(1, os.path.join(sys.path[0], '...'))
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 
-from tcr_compare import cluster
+import cluster
 
 class Test(unittest.TestCase):
     def setUp(self):
