@@ -9,8 +9,7 @@ src_path = (os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 print([x for x in os.listdir(src_path)])
 sys.path.append(src_path)
 
-import cluster
-
+from cluster import initialise, Cluster
 class Test(unittest.TestCase):
     def setUp(self):
         self.params = {'wdir': os.getcwd(),
@@ -26,8 +25,8 @@ class Test(unittest.TestCase):
             'min_clustsize': 1}
 
         self.model_selection=['clustcr','length']
-        self.params=cluster.initialise(self.params)
-        self.clust = cluster.Cluster(self.params)
+        self.params=initialise(self.params)
+        self.clust = Cluster(self.params)
         self.clust.load_data()
         self.clust.get_chain_data()
 
