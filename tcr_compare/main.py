@@ -104,8 +104,8 @@ if __name__=='__main__':
 
     parser.add_argument('-i', '--input_file', type=str, required=False, default='vdjdb',
                         help='input file: .csv or .pkl')
-    parser.add_argument('-m', '--model_selection', type=str,required=False, default = 'all',
-                        help='selection of models from ["clustcr","gliph2","ismart","length","tcrdist3","tcrai","all"]')
+    parser.add_argument('-m', '--model_selection', type=str,required=False, default = 'clustcr',
+                        help='selection of models from ["clustcr","gliph2","ismart","length","tcrdist3","all"]')
     parser.add_argument('-c', '--chain_selection', required=False, type=str,default='beta',
                         help= 'chain selection from ["alpha","beta","paired","all"]')
     parser.add_argument('-sp', '--spike_in', type=int,required=False, default=None,

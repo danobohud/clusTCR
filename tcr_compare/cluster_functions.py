@@ -47,7 +47,7 @@ def load_vdjdb(vdjdb_path):
     df2=df2.rename(columns={'meta.subject.id': 'subject',
                             'method.verification': 'condition'})
     df2['subject:condition']=[df2.iloc[i]['subject']+':'+'vdjdb' for i in range(len(df2))]
-    df2['antigen.epitope']=[df2.iloc[i]['mhc.a']+'_'+df2.iloc[i]['antigen.epitope']+'_'+df2.iloc[i]['antigen.gene']+'_'+df2.iloc[i]['antigen.species'] for i in range(len(df2))]
+    df2['Epitope']=[df2.iloc[i]['mhc.a']+'_'+df2.iloc[i]['Epitope']+'_'+df2.iloc[i]['antigen.gene']+'_'+df2.iloc[i]['antigen.species'] for i in range(len(df2))]
     return df2
 
 
@@ -58,7 +58,7 @@ def prepare_chains(ClusterObject):
     :type chain_selection: str'''
     
     epitopes=ClusterObject.data
-
+    print(epitopes.iloc[0]['Epitope'])
     chain_selection = ClusterObject.chain_selection
 
     # Handle vdjdb labels to align entries with GLIPH2 requirements
@@ -72,7 +72,7 @@ def prepare_chains(ClusterObject):
     if not 'Epitope' in epitopes.columns:
         epitopes['Epitope']=['None']*len(epitopes)
         
-    epitopes['Epitope']=epitopes['Epitope'].replace(np.nan,'None')
+    # epitopes['Epitope']=epitopes['Epitope'].replace(np.nan,'None')
     
     if ClusterObject.params['single_epitopes']==True:
 
