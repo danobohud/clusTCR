@@ -39,4 +39,4 @@ jobs:
     - name: Test with unittest
       run: |
         cd test
-        python -m unittest test_cluster
+        python -m unittest test_cluster.py
