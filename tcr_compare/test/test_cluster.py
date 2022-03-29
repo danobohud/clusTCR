@@ -1,9 +1,12 @@
 
 import os,sys,unittest
+import pandas as pd
+
 
 sys.path.insert(1, os.path.join(sys.path[0], '...'))
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
-src_path = (os.path.abspath(os.path.join(os.path.dirname(__file__), '..')) + '/tcr_compare/')
+src_path = (os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+print([x for x in os.listdir(src_path)])
 sys.path.append(src_path)
 
 import cluster
@@ -28,9 +31,15 @@ class Test(unittest.TestCase):
         self.clust.load_data()
         self.clust.get_chain_data()
 
-
     def test_cluster(self):
-        self.clust.cluster(self.model_selection)
+        # assert type(self.clust.chain) == pd.DataFrame()
+
+        for c in ['CDR3','V','J','Epitope']:
+            assert c in self.clust.epitopes.columns
+
+
+    # def test_cluster(self):
+    #     self.clust.cluster(self.model_selection)
 
 
 if __name__ == '__main__':
