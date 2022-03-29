@@ -36,4 +36,5 @@ jobs:
 #         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with unittest
       run: |
-        python -m unittest
+        pwd
+        python -m unittest clusTCR/tcr_compare/test/test_cluster.py
