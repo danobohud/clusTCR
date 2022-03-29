@@ -1,10 +1,9 @@
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-from Bio import SeqIO, motifs
-from Bio.Data import IUPACData
+from Bio import SeqIO
 import subprocess, os, sys
 from collections import Counter
-from util_functions import get_time, write_lines
+from util_functions import write_lines
 from clustcr.analysis.features import FeatureGenerator
 
 global root, wdir
