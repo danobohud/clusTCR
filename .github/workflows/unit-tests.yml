@@ -37,4 +37,4 @@ jobs:
     - name: Test with unittest
       run: |
         pwd
-        python -m unittest clusTCR/tcr_compare/test/test_cluster.py
+        python -m unittest /home/runner/work/clusTCR/clusTCR/tcr_compare/test/test_cluster.py
