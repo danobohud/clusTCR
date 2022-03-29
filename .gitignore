@@ -12,3 +12,13 @@ dist/
 .ipynb_checkpoints
 .sass-cache/
 _site/
+tcr_compare/results/**
+tcr_compare/logos/**/**
+tcr_compare/cytoscape/**
+tcr_compare/clusters/**
+tcr_compare/clusters/**/**
+tcr_compare/modules/olga/TR*
+tcr_compare/modules/gliph2/lib/meta*
+clustcr/modules/ismart/lib/input*
+clustcr/results/**
+clustcr/modules/faiss_clustering/data/VDJdb_human_trb_2020_10_23.tsv 

@@ -64,9 +64,9 @@ To run tcr_compare on your own data, input .csv files should include as a minimu
 *** Dependencies ***
 
 Software dependencies are listed in requirements.txt
-Please note that MUSCLE vXX is required for production of WebLogo motifs. MUSCLE should be accessible on the system path, or alternatively a path to the user's MUSCLE executable can be customised using the -mp flag from the main.py python executable.
+Please note that MUSCLE v3.8.1551 is required for production of WebLogo motifs. MUSCLE should be accessible on the system path, or alternatively a path to the user's MUSCLE executable can be customised using the -mp flag from the main.py python executable.
 
-GLIPH2 executables are provided for .osx and .centos machines in tcr_compare/modules/gliph2/lib/. GLIPH2 can also be accessed via http://50.255.35.37:8080/
+GLIPH2 executables are provided for .osx and .centos machines in tcr_compare/modules/gliph2/lib/. A GLIPH2 webtool can also be accessed via http://50.255.35.37:8080/
 
 
 *** Citation ***
