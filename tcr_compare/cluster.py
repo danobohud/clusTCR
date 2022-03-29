@@ -227,17 +227,19 @@ class Cluster:
 
         if ('cdr3.beta' not in data.columns) & ('cdr3.alpha' not in data.columns):
             raise KeyError("Please ensure cdr3 columns are labelled as cdr3.alpha or cdr3.beta")
-
+        
+        if self.params['annotate']==True:
+            print('Adding vdjdb for coclustering analysis')
+            vdjdb = load_vdjdb(os.path.join(self.params['wdir'],'data/vdjdb_full.txt'))
+            data=pd.concat([data,vdjdb]).reset_index(drop=True)
+        
         original = len(data)
         
         data=data.dropna(subset=['cdr3.alpha','v.alpha','j.alpha','cdr3.beta','v.beta','j.beta'])
         l2=len(data)
         data=data.drop_duplicates()
-        if self.params['annotate']==True:
-            print('Adding vdjdb for coclustering analysis')
-            vdjdb = load_vdjdb(os.path.join(self.params['root'],'clustcr/input/vdjdb/vdjdb_full.txt'))
-            data=pd.concat([data,vdjdb])
 
+        print(data.iloc[0]['Epitope'])
         print("Dropped {} NaNs and {} duplicates".format(original-l2,l2-len(data)))
 
         if self.params['spike_in']!=None:
@@ -257,7 +259,7 @@ class Cluster:
 
         chain, epitopes = prepare_chains(self)
 
-        if (self.params['annotate']==True) & ('None' in epitopes['Epitope'].unique()):
+        if (self.params['annotate']==True) & ('None' in list(set(epitopes['Epitope'].values))):
             epitopes=self.annotate(epitopes)    
 
         if bool(self.params['drop_nonbinders'])==True:
