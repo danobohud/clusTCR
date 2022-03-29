@@ -96,6 +96,7 @@ def get_motifs(clusters,outdir,n=5,muscle_path=None):
         for cluster in topn:                                    # Iterate over clusters
             logo = os.path.join(outdir,'%s_c%s.png'%(method,cluster))
             seqs=df[df['cluster']==cluster]['CDR3'].values.tolist() # Extract CDR3s
+            
             prepare_fasta(seqs,method,str(cluster),input_fasta)     # Generate combiend fasta
             run_MSA(input_fasta,output_fasta,muscle_path)           # run MSA
             get_weblogo(output_fasta,logo)  # Create logo
