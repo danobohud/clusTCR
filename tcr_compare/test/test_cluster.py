@@ -2,11 +2,10 @@
 import os,sys,unittest
 
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
-from base import TestBase
 
 import cluster
 
-class Test(TestBase):
+class Test(unittest.TestCase):
     def setUp(self):
         self.params = {'wdir': os.getcwd(),
             'input_file': 'vdjdb',
