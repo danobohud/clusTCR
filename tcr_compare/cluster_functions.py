@@ -58,7 +58,6 @@ def prepare_chains(ClusterObject):
     :type chain_selection: str'''
     
     epitopes=ClusterObject.data
-    print(epitopes.iloc[0]['Epitope'])
     chain_selection = ClusterObject.chain_selection
 
     # Handle vdjdb labels to align entries with GLIPH2 requirements
