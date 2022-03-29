@@ -6,7 +6,7 @@ sys.path.insert(1, os.path.join(sys.path[0], '..'))
 src_path = (os.path.abspath(os.path.join(os.path.dirname(__file__), '..')) + '/tcr_compare/')
 sys.path.append(src_path)
 
-import cluster
+# import cluster
 
 class Test(unittest.TestCase):
     def setUp(self):
