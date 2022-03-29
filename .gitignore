@@ -18,5 +18,6 @@ tcr_compare/cytoscape/**
 tcr_compare/clusters/**
 tcr_compare/clusters/**/**
 tcr_compare/modules/olga/TR*
-tcr_compare/modules/gliph2/lib/metarepertoire*
+tcr_compare/modules/gliph2/lib/meta*
 clustcr/modules/ismart/lib/input*
+clustcr/results/**
