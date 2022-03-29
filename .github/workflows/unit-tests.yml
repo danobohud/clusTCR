@@ -28,11 +28,9 @@ jobs:
       run: |
         cd /home/runner/work/clusTCR/clusTCR/tcr_compare/
         python -m pip install --upgrade pip
-        conda env create -f clusTCR_mod.yml
-        conda activate clusTCR_mod
         # python -m pip install flake8
-
-
+        conda env create -f tcrcomp.yml
+        conda activate tcrcomp
 #     - name: Lint with flake8
 #       run: |
 #         # stop the build if there are Python syntax errors or undefined names

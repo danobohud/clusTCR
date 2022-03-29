@@ -1,5 +1,7 @@
 
 import os,sys,unittest
+import pandas as pd
+
 
 sys.path.insert(1, os.path.join(sys.path[0], '...'))
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
@@ -29,10 +31,10 @@ class Test(unittest.TestCase):
         self.clust.load_data()
         self.clust.get_chain_data()
 
+    def test_cluster(self):
 
-#     def test_cluster(self):
-#         self.clust.cluster(self.model_selection)
-
+        for c in ['CDR3','V','J','Epitope']:
+            assert c in self.clust.epitopes.columns
 
 if __name__ == '__main__':
     unittest.main()
