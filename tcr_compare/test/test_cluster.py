@@ -1,9 +1,10 @@
 
 import os,sys,unittest
 
+sys.path.insert(1, os.path.join(sys.path[0], '...'))
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 
-import cluster
+from tcr_compare import cluster
 
 class Test(unittest.TestCase):
     def setUp(self):
