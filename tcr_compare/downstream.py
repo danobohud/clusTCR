@@ -54,11 +54,11 @@ def run_MSA(input,output,muscle_path=None):
     print('Generating MSA')
     if not muscle_path:
         muscle_path='/opt/local/bin/muscle'
-    # cmd = '/opt/local/bin/muscle -align {} -output {}'.format(input,output)
-    cmd = '{} -in {} -out {}'.format(muscle_path,input,output)
+    cmd = '{} -align {} -output {}'.format(muscle_path,input,output) # 
+    # cmd = '{} -in {} -out {}'.format(muscle_path,input,output)    
     subprocess.call(cmd, shell=True, executable='/bin/zsh')
 
-def get_weblogo(msa,out,start=2,format='png'):
+def get_weblogo(msa,out,start=1,format='pdf'):
     '''Produce Weblogo png image from MSA
     NB: weblogo .png production requires both Weblogo and Ghostscript
 
@@ -95,7 +95,7 @@ def get_motifs(clusters,outdir,n=5,muscle_path=None):
         else:
             topn=df['cluster'].value_counts().index[:n].tolist()    # Select top N
         for cluster in topn:                                    # Iterate over clusters
-            logo = os.path.join(outdir,'%s_c%s.png'%(method,cluster))
+            logo = os.path.join(outdir,'%s_c%s.pdf'%(method,cluster))
             seqs=df[df['cluster']==cluster]['CDR3'].values.tolist() # Extract CDR3s
             prepare_fasta(seqs,method,str(cluster),input_fasta)     # Generate combiend fasta
             run_MSA(input_fasta,output_fasta,muscle_path)           # run MSA
@@ -173,10 +173,6 @@ def annotate_experimental(clusters,epitopes,outdir,parameters,pGen=True):
             nodes['HLA_super']=['None' if 'None' in x else x[0].split('*')[1].split(':')[0] for x in split]
         else:
             nodes['HLA_super'] = ['None' if 'None' in x else x[0][-2:] for x in split]
-
-        # nums=Counter(nodes['Epitope'].values)
-        # cnt = [c for c in nums.keys() if  nums[c]>parameters['min_clustsize']]
-        # nodes=nodes[nodes['Epitope'].isin(cnt)]
 
         # Export networks
         print('Exporting network\n')

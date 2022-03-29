@@ -1,11 +1,7 @@
 
 import os,sys,unittest
 
-
-sys.path.insert(1, os.path.join(sys.path[0], '...'))
-sys.path.insert(1, os.path.join(sys.path[0], '..'))
 src_path = (os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-print([x for x in os.listdir(src_path)])
 sys.path.append(src_path)
 
 from cluster import initialise, Cluster
