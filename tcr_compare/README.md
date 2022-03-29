@@ -20,12 +20,10 @@ To install and run the tcr_compare module:
 git clone https://github.com/danobohud/clusTCR
 Navigate to the ClusTCR package on your local machine
 cd clusTCR/tcr_compare
-conda env create -f tcrmod.yml
+conda env create -f tcrcomp.yml
 
 *** Running the package ***
 
-
-cd clusTCR/tcr_compare
 conda activate clusTCR_mod
 
 To view the command line syntax and defaults:
@@ -65,10 +63,18 @@ To run tcr_compare on your own data, input .csv files should include as a minimu
 *** Dependencies ***
 
 Software dependencies are listed in requirements.txt
-Please note that MUSCLE v3.8.1551 is required for production of WebLogo motifs. MUSCLE should be accessible on the system path, or alternatively a path to the user's MUSCLE executable can be customised using the -mp flag from the main.py python executable.
 
 GLIPH2 executables are provided for .osx and .centos machines in tcr_compare/modules/gliph2/lib/. A GLIPH2 webtool can also be accessed via http://50.255.35.37:8080/
 
+NB: in order to produce and save WebLogo motifs using the -n flag, you will need to install some pakages separately due to conflicts with the conda environment. 
+1. Download and install MUSCLE from https://www.drive5.com/muscle/
+2. Ensure MUSCLE is on your system path as described at https://www.drive5.com/muscle/manual/install.html 
+3. If MUSCLE is still not executing, you can provide the path to your MUSCLE executable using the -mp flag
+4. conda activate tcrcomp
+5. pip3 install weblogo
+6. sudo port install ghostscript
+
+We are working on a more efficient implementation of the above for production of publication-quality logos. In the interim, cluster motifs can be generated using gliph2 (recorded in modules/gliph/lib/metarepertoire_cluster.csv).
 
 *** Citation ***
 
