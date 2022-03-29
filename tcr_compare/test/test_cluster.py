@@ -29,8 +29,8 @@ class Test(unittest.TestCase):
         self.clust.get_chain_data()
 
 
-    def test_cluster(self):
-        self.clust.cluster(self.model_selection)
+#     def test_cluster(self):
+#         self.clust.cluster(self.model_selection)
 
 
 if __name__ == '__main__':
