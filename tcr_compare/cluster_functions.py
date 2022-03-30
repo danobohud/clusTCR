@@ -83,12 +83,7 @@ def prepare_chains(ClusterObject):
     if chain_selection == 'alpha':
         if 'count_alpha' in epitopes.columns:
             epitopes = epitopes.rename(columns={'count_alpha':'Count'})
-        epitopes = epitopes.drop(labels=[x for x in epitopes.columns if x not in ['cdr3.alpha', 
-                                                                                'v.alpha',
-                                                                                'j.alpha',
-                                                                                'subject:condition',
-                                                                                'Count',
-                                                                                'Epitope']],axis=1)
+
         epitopes = epitopes.rename(columns={'cdr3.alpha':'CDR3',
                                             'v.alpha':'V',
                                             'j.alpha': 'J',
@@ -100,12 +95,6 @@ def prepare_chains(ClusterObject):
         if 'count_beta' in epitopes.columns:
             epitopes = epitopes.rename(columns={'count_beta':'Count'})
 
-        epitopes = epitopes.drop(labels=[x for x in epitopes.columns if x not in ['cdr3.beta',
-                                                                                    'v.beta',
-                                                                                    'j.beta',
-                                                                                    'subject:condition',
-                                                                                    'Count',
-                                                                                    'Epitope']],axis=1)
         epitopes = epitopes.rename(columns={'cdr3.beta':'CDR3',
                                             'v.beta':'V',
                                             'j.beta': 'J'})
@@ -592,47 +581,5 @@ def tcrdist(ClusterObject):
 
     t2 = time.time()
     t = t2 - t0
-    
-    return output, t, clusters
-
-
-def tcrai_clusts(ClusterObject):
-    path = os.path.join(ClusterObject.params['wdir'],'modules/TCRAI/')
-    
-    data=ClusterObject.epitopes.drop(labels='Epitope',axis=1)
-
-    if ClusterObject.chain_selection=='alpha':
-        data=data.rename(columns={'CDR3': 'CDR3_alpha'})
-    else:
-        data=data.rename(columns={'CDR3': 'CDR3_beta'})
-    input_file=os.path.join(path,'TCRAI.csv')
-    output_file=os.path.join(path,'TCRAI_result.csv')
-    print('Writing data to: ',input_file)
-    data.to_csv(input_file)
-    # To Do: define automatic lookup of current conda envt, upload tcrai .yml into modules folder
-    cmd = '. /Users/danhudson/opt/miniconda3/etc/profile.d/conda.sh && conda activate tcrai && python {}tcrai_implement.py -r {} -i {} -o {}'.format(path, path,
-                                                                                                                                                input_file,
-                                                                                                                                                output_file)
-    print('Running TCRAI')
-    subprocess.call(cmd, shell=True, executable='/bin/zsh')
-    print('Reading results')
-    tcrai_clusts= pd.read_csv(output_file)
-    tcrai_clusts=tcrai_clusts.rename(columns={'TRB_cdr3':'CDR3',
-                            'TRB_v_gene':'V',
-                            'TRB_j_gene':'J',
-                            'TRA_cdr3': 'CDR3_alpha',
-                            'TRA_v_gene': 'V_alpha',
-                            'TRA_j_gene':'J_alpha',
-                            'pmhc_code':'Epitope'}).drop(labels='Unnamed: 0',axis=1)
-
-    t=tcrai_clusts['Time'].unique()[0]
-    clusters=tcrai_clusts[['CDR3','cluster']]
-    
-    if ClusterObject.params['min_clustsize']:
-        cutoff = ClusterObject.params['min_clustsize']
-        clusters = trim_clusters(clusters,cutoff)
-
-    epitopes=ClusterObject.epitopes[['CDR3','Epitope']]
-    output = ClusteringResult(clusters).metrics(epitopes).summary()
     
     return output, t, clusters
