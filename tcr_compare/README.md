@@ -1,4 +1,4 @@
-*** Overview *** 
+# Overview
 
 The TCR compare package has been developed as a sub module of the excellent ClusTCR platform developed by Valkiers et al. (2021), to enable like-for-like comparison across a series of clustering algorithms accessible from the command line. 
 
