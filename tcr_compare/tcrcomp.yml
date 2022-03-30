@@ -1,14 +1,12 @@
 name: tcrcomp
 channels:
   - pytorch
-  - conda-forge
-  - bioconda
   - defaults
 dependencies:
-  - biopython=1.79=py38h96a0964_1
+  - biopython=1.78=py38h9ed2024_0
   - blas=1.0=mkl
-  - ca-certificates=2021.10.8=h033912b_0
-  - certifi=2021.10.8=py38h50d1736_1
+  - ca-certificates=2022.3.18=hecd8cb5_0
+  - certifi=2021.10.8=py38hecd8cb5_2
   - faiss-cpu=1.7.1=py3.8_h20d5d5c_1_cpu
   - intel-openmp=2021.4.0=hecd8cb5_3538
   - libcxx=12.0.0=h2f01273_0
@@ -22,10 +20,9 @@ dependencies:
   - ncurses=6.3=hca72f7f_2
   - numpy=1.21.2=py38h4b4dc7a_0
   - numpy-base=1.21.2=py38he0bd621_0
-  - openssl=1.1.1n=h6c3fc93_0
+  - openssl=1.1.1n=hca72f7f_0
   - pip=21.2.4=py38hecd8cb5_0
   - python=3.8.13=hdfd78df_0
-  - python_abi=3.8=2_cp38
   - readline=8.1.2=hca72f7f_1
   - setuptools=58.0.4=py38hecd8cb5_0
   - six=1.16.0=pyhd3eb1b0_1
@@ -75,4 +72,4 @@ dependencies:
     - tcrsampler==0.1.9
     - threadpoolctl==3.1.0
     - zipdist==0.1.5
-prefix: /opt/miniconda3/envs/tcrcomp
+prefix: /Users/danhudson/opt/miniconda3/envs/tcrcomp

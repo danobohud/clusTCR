@@ -1,10 +1,10 @@
 *** Overview *** 
 
-The TCR compare package has been developed as a sub module of the excellent ClusTCR platform developed by Sebastiaan Valkiers et al. (2021), to enable like-for-like comparison across a series of clustering algorithms accessible from the command line. 
+The TCR compare package has been developed as a sub module of the excellent ClusTCR platform developed by Valkiers et al. (2021), to enable like-for-like comparison across a series of clustering algorithms accessible from the command line. 
 
-The main amendments are as follows, all accessible via a command line interface (main.py):
-- Integration of a suite of clustering models to allow simulataneous execution and comparison of clustering results across ClusTCR [1], GLIPH2[2], GIANA[3], iSMART[4] and TCRDist3[5]. Additional Hamming and CDR3 length approaches are also included for benchmarking purposes
-- Annotation of orphan TCRs with exact matches from VDJdb
+The main amendments are as follows:
+- Integration of a suite of clustering models to allow simulataneous execution and comparison of clustering results across ClusTCR [1], GLIPH2 [2], GIANA [3], iSMART[4] and TCRDist3 [5]. Additional Hamming and CDR3 length approaches are also included for benchmarking purposes
+- Annotation of orphan TCRs with exact matches from VDJdb, McPas TCR and a reference set produced by the developers of GIANA [3]
 - Co-clustering analysis of orphan / user input data with reference VDJdb data
 - Addition of measures of predictive performance in epitope specifcity inference  (Accuracy, Precision, Recall and F1-score) for datasets of experimentally detemined TCR-epitope pairs
 - Automated recording of clustering results for ease of comparison
@@ -35,30 +35,34 @@ i) an example clustering analysis on VDJdb with a single model and beta chain se
 
 python main.py -m clusTCR -c beta
 
-ii) an example clustering analysis with example 10X data for all models and paired chain selections
+ii) an example clustering analysis with example 10X data for all models and alpha chain selections
 
-python main.py -m all -c paired -i data/10X_dexnorm.csv
+python main.py -m all -c alpha -i data/10X_dexnorm.csv -se True
 
-iii) with output of weblogo motifs for the top 5 largest clusters, and cytoscape network graphs (saved in logos and cytoscape folders respectively):
+iii) with cytoscape network graphs (saved in the cytoscape folder):
 
-python main.py -g True -n 5
+python main.py -m giana -g True
 
-iv) with VDJdb annotation and co-clustering with VDJdb:
+iv) with exact match reference annotation and VDJdb co-clustering:
 
 python main.py -i data/10X_dexnorm.csv -a True -g True
 
 Results will be recorded in:
 data/results.csv (clustering results and grouped accuracy scores over all epitopes) data/results_pr.csv (train and test accuracy scores for the top three epitopes)
 logos (Weblogo motifs)
-cytoscape/datetime (edge and node lists, see ClusTCR documentation for instructions on how to visualise these in Cytoscape)
+cytoscape (edge and node lists, see ClusTCR documentation for instructions on how to visualise these in Cytoscape)
 
 To run tcr_compare on your own data, input .csv files should include as a minimum one column entitled 'cdr3.beta' or 'cdr3.alpha'. V, D and J gene usage may be included as columns entitled v.alpha, j.alpha, v.beta, d.beta or j.beta. Clonotype frequency information should be recorded under 'Count', subject information under 'subject:condition' and epitope information under 'Epitope' (all case-sensitive). Any other columns will be passed to the model as-is, and linked to input sequences via unique CDR3 keys post-clustering. 
 
+*** Cytoscape graphs ***
+
+Step-by-step instructions to the production of Cytoscape network grpahs from edge and node lists are provided in the ClusTCR documentation here: https://svalkiers.github.io/clusTCR/docs/analyzing/visualization.html 
+
 *** Datasets provided ***
 
-- VDJDb_trimmed_3.csv: A VDJDB reference [6]treated to remove any epitopes represented fewert han three times in the dataset
+- VDJDb_trimmed_3.csv: A VDJDB reference [6] treated to remove any epitopes represented fewer than three times in the dataset
 - 10X_dexnorm.csv: CD8+ multimodal single cell data from 4 healthy donors produced with 10X CellRanger and available at https://support.10xgenomics.com/single-cell-vdj/datasets/3.0.2/vdj_v1_hs_aggregated_donor[X]? where [X]=1,2,3 or 4. Ths data has been processed to improve dextramer UMI signal to noise ratios following the methodology of [7]
-- combined_cdr3.csv: Combined inputs from VDJdb, McPas-TCR and GIANA for epitope annotation of orphan TCR datasets [3]
+- combined_cdr3.csv: Combined inputs from VDJdb [6], McPas-TCR [8] and GIANA [3] for epitope annotation of orphan TCR datasets
 
 *** Dependencies ***
 
@@ -74,7 +78,7 @@ NB: in order to produce and save WebLogo motifs using the -n flag, you will need
 5. pip3 install weblogo
 6. sudo port install ghostscript
 
-We are working on a more efficient implementation of the above for production of publication-quality logos. In the interim, cluster motifs can be generated using gliph2 (recorded in modules/gliph/lib/metarepertoire_cluster.csv).
+We are working on a more efficient implementation of the above for production of publication-quality logos. In the interim, text cluster motifs are generated automatically and stored in the output nodelist.
 
 *** Citation ***
 
@@ -93,3 +97,4 @@ Update 28/03/22: A detailed description of the methodology and the principle fin
 5. Mayer-Blackwell, K., Schattgen, S., Cohen-Lavi, L., Crawford, J. C., Souquette, A., Gaevert, J. A., Hertz, T., Thomas, P. G., Bradley, P. G., & Fiore-Gartland, A. (2021). Tcr meta-clonotypes for biomarker discovery with tcrdist3 enabled identification of public, hla-restricted clusters of sars-cov-2 tcrs. ELife, 10. https://doi.org/10.7554/ELIFE.68605
 6. Bagaev, D. v., Vroomans, R. M. A., Samir, J., Stervbo, U., Rius, C., Dolton, G., Greenshields-Watson, A., Attaf, M., Egorov, E. S., Zvyagin, I. v., Babel, N., Cole, D. K., Godkin, A. J., Sewell, A. K., Kesmir, C., Chudakov, D. M., Luciani, F., & Shugay, M. (2020). VDJdb in 2019: database extension, new analysis infrastructure and a T-cell receptor motif compendium. Nucleic Acids Research, 48(D1), D1057–D1062. https://doi.org/10.1093/NAR/GKZ874
 7. Zhang, W., Hawkins, P. G., He, J., Gupta, N. T., Liu, J., Choonoo, G., Jeong, S. W., Chen, C. R., Dhanik, A., Dillon, M., Deering, R., Macdonald, L. E., Thurston, G., & Atwal, G. S. (2021). A framework for highly multiplexed dextramer mapping and prediction of T cell receptor sequences to antigen specificity. Sci. Adv, 7, 5835–5849. https://www.science.org  
+8. Tickotsky, N., Sagiv, T., Prilusky, J., Shifrut, E., & Friedman, N. (n.d.). McPAS-TCR: a manually curated catalogue of pathology-associated T cell receptor sequences. https://doi.org/10.1093/bioinformatics/btx286
