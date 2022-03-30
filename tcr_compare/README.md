@@ -13,6 +13,9 @@ The main amendments are as follows:
 
 The core functionality of ClusTCR is unchanged from the original package, and so users are directed to the ClusTCR documentation for answers to questions on ClusTCR feature extraction and graph plotting, available at https://svalkiers.github.io/clusTCR/.
 
+Contact: dan.hudson@dtc.ox.ac.uk
+
+
 ## Installation
 
 To install and run the tcr_compare module:
