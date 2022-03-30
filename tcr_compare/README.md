@@ -22,7 +22,7 @@ Navigate to the ClusTCR package on your local machine
 cd clusTCR/tcr_compare
 conda env create -f tcrcomp.yml
 
-*** Running the package ***
+## Running the package
 
 conda activate clusTCR_mod
 
@@ -54,17 +54,17 @@ cytoscape (edge and node lists, see ClusTCR documentation for instructions on ho
 
 To run tcr_compare on your own data, input .csv files should include as a minimum one column entitled 'cdr3.beta' or 'cdr3.alpha'. V, D and J gene usage may be included as columns entitled v.alpha, j.alpha, v.beta, d.beta or j.beta. Clonotype frequency information should be recorded under 'Count', subject information under 'subject:condition' and epitope information under 'Epitope' (all case-sensitive). Any other columns will be passed to the model as-is, and linked to input sequences via unique CDR3 keys post-clustering. 
 
-*** Cytoscape graphs ***
+## Cytoscape graphs
 
 Step-by-step instructions to the production of Cytoscape network grpahs from edge and node lists are provided in the ClusTCR documentation here: https://svalkiers.github.io/clusTCR/docs/analyzing/visualization.html 
 
-*** Datasets provided ***
+## Datasets provided
 
 - VDJDb_trimmed_3.csv: A VDJDB reference [6] treated to remove any epitopes represented fewer than three times in the dataset
 - 10X_dexnorm.csv: CD8+ multimodal single cell data from 4 healthy donors produced with 10X CellRanger and available at https://support.10xgenomics.com/single-cell-vdj/datasets/3.0.2/vdj_v1_hs_aggregated_donor[X]? where [X]=1,2,3 or 4. Ths data has been processed to improve dextramer UMI signal to noise ratios following the methodology of [7]
 - combined_cdr3.csv: Combined inputs from VDJdb [6], McPas-TCR [8] and GIANA [3] for epitope annotation of orphan TCR datasets
 
-*** Dependencies ***
+## Dependencies
 
 Software dependencies are listed in requirements.txt
 
@@ -80,7 +80,7 @@ NB: in order to produce and save WebLogo motifs using the -n flag, you will need
 
 We are working on a more efficient implementation of the above for production of publication-quality logos. In the interim, text cluster motifs are generated automatically and stored in the output nodelist.
 
-*** Citation ***
+## Citation
 
 For use of this package, please cite the original ClusTCR manuscript [1], and the following:
 
@@ -88,7 +88,7 @@ TCR Compare, co-developed by the Koohy Lab at the University of Oxford and the B
 
 Update 28/03/22: A detailed description of the methodology and the principle findings of this package will be released on Arxiv in due course.
 
-*** References ***
+## References
 
 1. Valkiers, S., van Houcke, M., Laukens, K., & Meysman, P. (2021). ClusTCR: a python interface for rapid clustering of large sets of CDR3 sequences with unknown antigen specificity. Bioinformatics, 37(24), 4865–4867. https://doi.org/10.1093/BIOINFORMATICS/BTAB446
 2. Huang, H., & Wang, C. (n.d.). Analyzing the Mycobacterium tuberculosis immune response by T-cell receptor clustering with GLIPH2 and genome-wide antigen screening. Nature Biotechnology. https://doi.org/10.1038/s41587-020-0505-4
