@@ -5,6 +5,7 @@ import subprocess, os, sys
 from collections import Counter
 from util_functions import write_lines
 from clustcr.analysis.features import FeatureGenerator
+import numpy as np
 
 global root, wdir
 
@@ -160,18 +161,23 @@ def annotate_experimental(clusters,epitopes,outdir,parameters,pGen=True):
         # Annotate clusters with features
         analysis = FeatureGenerator(nodes) 
         analysis.get_features(compute_pgen=pGen)
-        featuredict[key]=analysis
-        analysis = FeatureGenerator(nodes) 
-        analysis.get_features(compute_pgen=pGen)
-        nodes=nodes.merge(epitopes[['CDR3','V','J','Epitope','subject:condition']])
-        nodes['Length']=[len(cdr3) for cdr3 in nodes['CDR3'].values]
+        motifs=analysis.clustermotif()
+        nodes['motif']=nodes['cluster'].map(motifs)
+        featuredict[key]=nodes
 
-        split = [nodes.iloc[i]['Epitope'].split('_') for i in range(len(nodes))]
-        nodes['HLA']=[x[0] for x in split]
-        if '*' in nodes['HLA'].unique():
-            nodes['HLA_super']=['None' if 'None' in x else x[0].split('*')[1].split(':')[0] for x in split]
-        else:
-            nodes['HLA_super'] = ['None' if 'None' in x else x[0][-2:] for x in split]
+        eps=epitopes.copy()
+        mapdict={}
+        
+        for col in eps.columns:
+            if col not in nodes.columns:
+                mapdict[col]={cdr3:x for cdr3,x in zip(eps['CDR3'].values,eps[col].values)}
+                nodes[col]=nodes['CDR3'].map(mapdict[col]).replace(np.nan,'NA').astype(str)
+    
+        nodes['Length']=[len(cdr3) for cdr3 in nodes['CDR3'].values]
+        
+        if ('_' in nodes['Epitope'].unique())&('HLA' in nodes['Epitope'].unique()):
+            split = [nodes.iloc[i]['Epitope'].split('_') for i in range(len(nodes))]
+            nodes['HLA']=[x[0] for x in split]
 
         # Export networks
         print('Exporting network\n')

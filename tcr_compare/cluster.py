@@ -4,7 +4,7 @@ import pandas as pd
 import os
 
 from cluster_functions import prepare_chains, load_vdjdb, get_epitope
-from cluster_functions import clusTCR, GIANA, gliph2, ismart, hamming, length_cluster, tcrdist, tcrai_clusts
+from cluster_functions import clusTCR, GIANA, gliph2, ismart, hamming, length_cluster, tcrdist
 from util_functions import write_lines, get_time, make_resultsfile
 
 from precision_recall import relabel_test, get_targets, analyse, write_pr, get_precision_recall
@@ -238,8 +238,6 @@ class Cluster:
         data=data.dropna(subset=['cdr3.alpha','v.alpha','j.alpha','cdr3.beta','v.beta','j.beta'])
         l2=len(data)
         data=data.drop_duplicates()
-
-        print(data.iloc[0]['Epitope'])
         print("Dropped {} NaNs and {} duplicates".format(original-l2,l2-len(data)))
 
         if self.params['spike_in']!=None:
