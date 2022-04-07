@@ -7,7 +7,7 @@ sys.path.append(src_path)
 from cluster import initialise, Cluster
 class Test(unittest.TestCase):
     def setUp(self):
-        self.params = {'wdir': os.getcwd(),
+        self.params = {'wdir': os.path.join(os.getcwd(), 'tcr_compare'),
             'input_file': 'vdjdb',
             'chain_selection': 'beta',
             'cpus': 1,
