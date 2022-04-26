@@ -27,7 +27,7 @@ conda env create -f tcrcomp.yml
 
 ## Running the package
 
-conda activate clusTCR_mod
+conda activate tcrcomp
 
 To view the command line syntax and defaults:
 python main.py -h
