@@ -87,7 +87,7 @@ We are working on a more efficient implementation of the above for production of
 
 For use of this package, please cite the original ClusTCR manuscript [1], and the following:
 
-TCR Compare, co-developed by the Koohy Lab at the University of Oxford and the Basham group at the Rosalind Franklin Institute. Released April 8th 2022 at https://github.com/danobohud/clustcr. [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6478159.svg)](https://doi.org/10.5281/zenodo.6478159)
+TCR Compare, co-developed by the Koohy Lab at the University of Oxford and the Basham group at the Rosalind Franklin Institute. Released April 8th 2022 at https://github.com/danobohud/clustcr. [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6406936.svg)](https://doi.org/10.5281/zenodo.6406936)
 
 ## References
 
