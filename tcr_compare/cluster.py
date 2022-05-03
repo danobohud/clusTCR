@@ -317,9 +317,7 @@ class Cluster:
         expt = self.params['experiment']
         results=[]
         if 'method' not in self.results.columns:
-            raise KeyError(print('No results detected. This may be because a model',
-                                 'has been selected that cannot be used with the input dataset',
-                                 'or chain selection. Please refer to the README for details'))
+            raise KeyError('No results detected. This may be because a model has been selected that cannot be used with the input dataset or chain selection. Please refer to the README for details')
 
         for method in self.results['method'].unique():
             # Extract results and pepare for csv write
