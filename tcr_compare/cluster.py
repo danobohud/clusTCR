@@ -173,7 +173,7 @@ class Cluster:
         e = 0
         eps = []
         for i, cdr3 in enumerate(epitopes['CDR3'].values):
-            if epitopes.iloc[i]['Epitope'] == 'None':
+            if epitopes.iloc[i]['Epitope'] in ['None',np.nan]:
                 if cdr3 in set(ref['CDR3'].values):
                     eps.append(get_epitope(cdr3, ref))
                     e += 1
@@ -227,6 +227,7 @@ class Cluster:
                 # reference = pd.read_csv(os.path.join(self.params['wdir'],'data/vdjdb_mira.csv'))
             
             data = pd.concat([data, reference]).reset_index(drop=True)
+            data['Epitope'].replace(np.nan,'Orphan TCR')
         
         original = len(data)
         
@@ -251,6 +252,7 @@ class Cluster:
 
 
         data = data.drop_duplicates()
+
         print("Dropped {} NaNs, {} OOV and {} duplicates".format(original-l2, l2-l3, l3-len(data)))
 
         if self.params['spike_in']:
@@ -268,8 +270,9 @@ class Cluster:
 
         chain, epitopes = prepare_chains(self)
 
-        if self.params['annotate'] and 'None' in list(set(epitopes['Epitope'].values)):
+        if self.params['annotate']:
             epitopes = self.annotate(epitopes)
+            epitopes['Epitope'].replace(np.nan,'Orphan TCR',inplace=True)
 
         if bool(self.params['drop_nonbinders']):
             print('Dropping non-binders')
