@@ -155,7 +155,7 @@ def annotate_experimental(clusters, epitopes, outdir, parameters, pGen=True):
     :rtype: dict"""
 
     # Strip 'test' annotation in precision_recall analysis
-    print(epitopes['Epitope'].unique())
+    
     epitopes['Epitope'] = ['Orphan TCR' if type(x) ==float else x.strip('Test_') for x in epitopes['Epitope']]
 
     featuredict={}

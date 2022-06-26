@@ -2,6 +2,7 @@ import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 import pandas as pd
 import os
+import numpy as np
 
 from cluster_functions import prepare_chains, load_vdjdb, get_epitope
 from cluster_functions import clusTCR, GIANA, gliph2, ismart, hamming, length_cluster, tcrdist
@@ -88,6 +89,11 @@ class Cluster:
         self.targets = None
         self.N = None
         self.result_df = None
+        self.alphabet = {v:k for k,v in enumerate(
+            ['A', 'C', 'D','E','F',
+            'G','H','I','K','L',
+            'M','N','P','Q','R',
+            'S','T','V','W','Y'])}
 
         print("Initialised with chain selection: ", self.chain_selection)
 
@@ -161,8 +167,8 @@ class Cluster:
         :param epitopes: input dataset
         :type epitopes: DataFrame"""
 
-        ref = pd.read_csv('data/combined_cdr3.csv')
-        print('Annotating missing epitopes from VDJDB, McPas and GIANA reference databases')
+        ref = pd.read_csv('data/combined_cdr3_2.csv')
+        print('Annotating missing epitopes from VDJDB, McPas, MIRA and GIANA reference databases')
 
         e = 0
         eps = []
@@ -213,17 +219,39 @@ class Cluster:
             raise KeyError("Please ensure cdr3 columns are labelled as cdr3.alpha or cdr3.beta")
         
         if self.params['annotate']:
-            print('Adding vdjdb for co-clustering analysis')
-            vdjdb = load_vdjdb(os.path.join(self.params['wdir'],'data/vdjdb_full.txt'))
-            data = pd.concat([data, vdjdb]).reset_index(drop=True)
+            print('Adding reference sequences for co-clustering analysis')
+            # if self.params['chain_selection'] in ['alpha','paired']:
+            reference = load_vdjdb(os.path.join(self.params['wdir'],'data/vdjdb_full.txt'))
+
+            # else:
+                # reference = pd.read_csv(os.path.join(self.params['wdir'],'data/vdjdb_mira.csv'))
+            
+            data = pd.concat([data, reference]).reset_index(drop=True)
         
         original = len(data)
-        data = data.dropna(subset=['cdr3.alpha', 'v.alpha',
-                                   'j.alpha', 'cdr3.beta',
-                                   'v.beta', 'j.beta'])
+        
+        if self.params['chain_selection']=='alpha':
+            cols = ['cdr3.alpha', 'v.alpha','j.alpha']
+        elif self.params['chain_selection']=='beta':
+            cols = ['cdr3.beta', 'v.beta','j.beta']
+        else:
+            cols = ['cdr3.alpha', 'v.alpha','j.alpha',
+                    'cdr3.beta', 'v.beta','j.beta']
+        
+        data = data.dropna(subset=cols)
+        data=data.replace(np.nan,'NA')
         l2 = len(data)
+
+        print('Dropping out-of-vocabulary values')
+
+        cdr = [c for c in cols if 'cdr3' in c]
+        for c in cdr:
+            data=data[~data[c].apply(lambda x: len([aa for aa in x if aa not in self.alphabet])!=0)]
+        l3 = len(data)
+
+
         data = data.drop_duplicates()
-        print("Dropped {} NaNs and {} duplicates".format(original-l2, l2-len(data)))
+        print("Dropped {} NaNs, {} OOV and {} duplicates".format(original-l2, l2-l3, l3-len(data)))
 
         if self.params['spike_in']:
             # Add random instances produced with OLGA
