@@ -221,7 +221,10 @@ class Cluster:
         if self.params['annotate']:
             print('Adding reference sequences for co-clustering analysis')
             # if self.params['chain_selection'] in ['alpha','paired']:
-            reference = load_vdjdb(os.path.join(self.params['wdir'],'data/vdjdb_full.txt'))
+            path = os.path.join(self.params['wdir'], 'data/vdjdb_trimmed_3.csv')
+            reference = pd.read_csv(path)
+            # reference = load_vdjdb(os.path.join(self.params['wdir'],'data/vdjdb_full.txt'))
+            
             reference['Source']=['VDJdb']*len(reference)
             data['Source']=['User Input']*len(data)
 

@@ -141,12 +141,13 @@ def make_edgelist(nodes, output_file):
 
 def drop_extras(nodes, min_clustsize):
     print('Filtering clusters for those with user input data')
-    sub = pd.DataFrame(pd.concat([nodes[nodes['cluster']==c] for c in nodes['cluster'].unique() if 'User Input' in nodes[nodes['cluster']==c]['Source'].unique() and len(nodes[nodes['cluster']==c])>min_clustsize]))
+    sub = pd.DataFrame(pd.concat([nodes[nodes['cluster']==c] for c in nodes['cluster'].unique() if 'User Input' in nodes[nodes['cluster']==c]['Source'].unique() and len(nodes[nodes['cluster']==c])>min_clustsize ]))
     print('%s instances retained with %s unique epitopes'%(str(len(sub)),str(len(sub['Epitope'].unique())-1)))
     
     return sub
 
 def enrichment(nodes):
+    nodes = pd.DataFrame(pd.concat([nodes[nodes['cluster']==c] for c in nodes['cluster'].unique() if 'Orphan TCR' in nodes[nodes['cluster']==c]['Epitope'].unique() ]))
     clusters = nodes['cluster'].unique()
     counts = {k:v for k,v in Counter(nodes['Epitope'].values).items()}
     freqs_global = {ep:counts[ep]/len(nodes) for ep in counts.keys()}
@@ -245,12 +246,13 @@ def annotate_experimental(clusters, epitopes, outdir, parameters, pGen=True):
         print('Exporting network\n')
         if parameters['annotate']:
             nodes = drop_extras(nodes,parameters['min_clustsize'])
+            nodedict, counts = enrichment(nodes)
+            enriched = get_enriched(nodedict, counts)
+            enriched.to_csv(outdir+'/%s_%s_clusteval.csv' % (key, parameters['name']))
 
         make_edgelist(nodes, outdir+'/%s_%s_edgelist.txt' % (key, parameters['name']))
         nodes.to_csv(outdir+'/%s_%s_nodelist.txt' % (key, parameters['name']), index=False)
-        nodedict, counts = enrichment(nodes)
-        enriched = get_enriched(nodedict, counts)
-        enriched.to_csv(outdir+'/%s_%s_clusteval.csv' % (key, parameters['name']))
+
 
         print('Complete')
         
