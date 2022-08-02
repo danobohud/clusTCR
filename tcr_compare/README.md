@@ -57,6 +57,9 @@ cytoscape (edge and node lists, see ClusTCR documentation for instructions on ho
 
 To run tcr_compare on your own data, input .csv files should include as a minimum one column entitled 'cdr3.beta' or 'cdr3.alpha'. V, D and J gene usage may be included as columns entitled v.alpha, j.alpha, v.beta, d.beta or j.beta. Clonotype frequency information should be recorded under 'Count', subject information under 'subject:condition' and epitope information under 'Epitope' (all case-sensitive). Any other columns will be passed to the model as-is, and linked to input sequences via unique CDR3 keys post-clustering. 
 
+# Update 29/07/22
+Functionality has been updated such that clusters are filtered following annotation, so that only those clusters including user input data are returned in the node list.
+
 ## Cytoscape graphs
 
 Step-by-step instructions to the production of Cytoscape network grpahs from edge and node lists are provided in the ClusTCR documentation here: https://svalkiers.github.io/clusTCR/docs/analyzing/visualization.html 

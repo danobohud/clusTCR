@@ -53,7 +53,7 @@ def initialise(parameters):
     make_resultsfile(results_file2, parameters, pr=True)
     
     for (key,value) in [('input_file', input_file),
-                        ('name', input_file.split('/')[-1]),
+                        ('name', input_file.split('/')[-1].strip('.csv')+'_%s'%(parameters['model_selection'])),
                         ('results_file', results_file)]:
                         parameters[key] = value
     
@@ -222,12 +222,14 @@ class Cluster:
             print('Adding reference sequences for co-clustering analysis')
             # if self.params['chain_selection'] in ['alpha','paired']:
             reference = load_vdjdb(os.path.join(self.params['wdir'],'data/vdjdb_full.txt'))
+            reference['Source']=['VDJdb']*len(reference)
+            data['Source']=['User Input']*len(data)
 
             # else:
                 # reference = pd.read_csv(os.path.join(self.params['wdir'],'data/vdjdb_mira.csv'))
             
             data = pd.concat([data, reference]).reset_index(drop=True)
-            data['Epitope'].replace(np.nan,'Orphan TCR')
+            data['Epitope']=data['Epitope'].replace(np.nan,'Orphan TCR')
         
         original = len(data)
         
@@ -249,7 +251,6 @@ class Cluster:
         for c in cdr:
             data=data[~data[c].apply(lambda x: len([aa for aa in x if aa not in self.alphabet])!=0)]
         l3 = len(data)
-
 
         data = data.drop_duplicates()
 

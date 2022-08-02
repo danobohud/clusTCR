@@ -6,6 +6,7 @@ from collections import Counter
 from util_functions import write_lines
 from clustcr.analysis.features import FeatureGenerator
 import numpy as np
+import pandas as pd
 
 global root, wdir
 wdir=os.getcwd()
@@ -138,6 +139,55 @@ def make_edgelist(nodes, output_file):
         out.extend(edges)
     write_lines(output_file, out)
 
+def drop_extras(nodes, min_clustsize):
+    print('Filtering clusters for those with user input data')
+    sub = pd.DataFrame(pd.concat([nodes[nodes['cluster']==c] for c in nodes['cluster'].unique() if 'User Input' in nodes[nodes['cluster']==c]['Source'].unique() and len(nodes[nodes['cluster']==c])>min_clustsize]))
+    print('%s instances retained with %s unique epitopes'%(str(len(sub)),str(len(sub['Epitope'].unique())-1)))
+    
+    return sub
+
+def enrichment(nodes):
+    clusters = nodes['cluster'].unique()
+    counts = {k:v for k,v in Counter(nodes['Epitope'].values).items()}
+    freqs_global = {ep:counts[ep]/len(nodes) for ep in counts.keys()}
+    outdict={}
+    for cluster in clusters:
+        sub = nodes[nodes['cluster']==cluster]
+        eps = {k:v for k,v in Counter(sub['Epitope'].values).items()}
+        freqs_local = {ep:eps[ep]/len(sub) for ep in eps.keys()}
+        outdict[cluster]={}
+        outdict[cluster]['Counts']=eps
+        outdict[cluster]['Enrichment']={epitope: freqs_local[epitope]/freqs_global[epitope] for epitope in freqs_local.keys()}
+    return outdict,counts
+
+def get_enriched(outdict,counts):
+    
+    out=[['Cluster','Orphan TCRs','Orphan TCR Enrichment','Most Enriched Labelled Epitope','Enrichment','Count','Total count']]
+    for cluster in list(outdict.keys()):
+        try:
+            tdict=outdict[cluster]['Enrichment']
+            vals = sorted(tdict.items(), key=lambda kv: kv[1])[::-1]
+            emax = max(tdict, key=tdict.get)
+            if (emax=='Orphan TCR') & (len(vals)>1):
+                emax = vals[1][0]
+                out.append([cluster,
+                            outdict[cluster]['Counts']['Orphan TCR'],
+                            outdict[cluster]['Enrichment']['Orphan TCR'],
+                            emax,
+                            outdict[cluster]['Enrichment'][emax],
+                            outdict[cluster]['Counts'][emax],
+                            counts[emax]])
+            else:
+                    out.append([cluster,
+                        outdict[cluster]['Counts']['Orphan TCR'],
+                        outdict[cluster]['Enrichment']['Orphan TCR'],
+                        emax,
+                        outdict[cluster]['Enrichment'][emax],
+                        outdict[cluster]['Counts'][emax],
+                        counts[emax]])
+        except KeyError:
+            print(cluster, outdict[cluster]['Counts'])
+    return pd.DataFrame(out)
 
 def annotate_experimental(clusters, epitopes, outdir, parameters, pGen=True):
     """Generate cytoscape graphs annotated with features and epitope binding data
@@ -162,6 +212,7 @@ def annotate_experimental(clusters, epitopes, outdir, parameters, pGen=True):
     for key in clusters.keys(): # Iterate over models
         print('*** Generating edge list for %s ***' % (key))
         nodes = clusters[key]
+
         print('Creating node list with cluster features')
 
         if pGen:
@@ -192,8 +243,15 @@ def annotate_experimental(clusters, epitopes, outdir, parameters, pGen=True):
 
         # Export networks
         print('Exporting network\n')
+        if parameters['annotate']:
+            nodes = drop_extras(nodes,parameters['min_clustsize'])
+
         make_edgelist(nodes, outdir+'/%s_%s_edgelist.txt' % (key, parameters['name']))
         nodes.to_csv(outdir+'/%s_%s_nodelist.txt' % (key, parameters['name']), index=False)
+        nodedict, counts = enrichment(nodes)
+        enriched = get_enriched(nodedict, counts)
+        enriched.to_csv(outdir+'/%s_%s_clusteval.csv' % (key, parameters['name']))
+
         print('Complete')
         
     return featuredict
